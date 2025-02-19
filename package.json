@@ -21,6 +21,7 @@
 		"dev": "tsup src/index.ts --format esm --watch --clean --onSuccess \"node dist/index.js\"",
 		"prepare": "husky install",
 		"release": "changeset publish",
+		"lint": "eslint",
 		"test": "vitest",
 		"cli": "tsx src/index.ts"
 	},
