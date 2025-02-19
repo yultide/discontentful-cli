@@ -28,3 +28,6 @@ devcontainer.env
 
 # Mac
 .DS_Store
+
+# Builds
+*.tgz
