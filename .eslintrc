@@ -16,6 +16,7 @@
 			"extends": ["plugin:@typescript-eslint/recommended"],
 			"plugins": ["@typescript-eslint"],
 			"rules": {
+				"max-len": ["error", { "code": 160 }],
 				"@typescript-eslint/ban-ts-comment": "warn",
 				"@typescript-eslint/explicit-module-boundary-types": "off"
 			}
