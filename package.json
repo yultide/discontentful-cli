@@ -35,8 +35,11 @@
 		]
 	},
 	"dependencies": {
-		"chalk": "^5.2.0",
+		"@inquirer/prompts": "^7.3.2",
+		"chalk": "^5.4.1",
 		"commander": "^13.1.0",
+		"contentful-management": "^11.47.2",
+		"exceljs": "^4.4.0",
 		"figlet": "^1.5.2",
 		"ora": "^6.1.2"
 	},
@@ -54,7 +57,7 @@
 		"@typescript-eslint/parser": "^5.48.1",
 		"eslint": "^8.31.0",
 		"eslint-config-prettier": "^8.6.0",
-		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-prettier": "^5.2.3",
 		"husky": "^9.1.7",
 		"lint-staged": "^13.1.0",
 		"prettier": "^3.5.1",

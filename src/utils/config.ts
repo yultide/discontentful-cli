@@ -2,8 +2,12 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
-interface Config {
-	pat: string; // personal access token
+export interface Config {
+	cmaToken: string; // personal access token
+	cdToken: string; // delivery token
+	cpToken: string; // preview token
+	spaceId: string; // space id
+	envId: string; // env id
 }
 
 const defaultConfigName = '.ctt.json';
@@ -14,7 +18,13 @@ export function getConfig(configName = defaultConfigName): Config {
 		const cfg = fs.readFileSync(configPath).toString();
 		return JSON.parse(cfg) as Config;
 	}
-	return {} as Config;
+	return {
+		cmaToken: '',
+		cdToken: '',
+		cpToken: '',
+		spaceId: '',
+		envId: '',
+	};
 }
 
 export function saveConfig(config: Config, configName = defaultConfigName): Config {

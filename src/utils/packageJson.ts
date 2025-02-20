@@ -11,9 +11,7 @@ export const packageJSON = {
 		if (!fs.existsSync(packageJsonPath)) {
 			packageJsonPath = path.resolve(__dirname, '../..', 'package.json');
 		}
-		const packageJsonContent = JSON.parse(
-			fs.readFileSync(packageJsonPath, 'utf-8'),
-		) as PackageJson;
+		const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8')) as PackageJson;
 		return packageJsonContent;
 	},
 

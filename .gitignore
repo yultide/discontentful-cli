@@ -25,6 +25,7 @@ coverage
 # ENV files
 devcontainer.env
 .env
+.env.local
 
 # Mac
 .DS_Store
