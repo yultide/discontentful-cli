@@ -7,7 +7,13 @@ import { Config, getConfig, saveConfig } from './config.js';
 describe('getConfig', () => {
 	test('should return {} for a non existing config', () => {
 		const cfg = getConfig('does-not-exist.cfg');
-		expect(cfg).toEqual({});
+		expect(cfg).toEqual({
+			cmaToken: '',
+			cdToken: '',
+			cpToken: '',
+			spaceId: '',
+			envId: '',
+		});
 	});
 	test('should return correct config', () => {
 		const configName = 'test-config.cfg';
