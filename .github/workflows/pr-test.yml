@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  pull-requests: write
+
 jobs:
   unit-test:
     if: github.event.pull_request.draft == false
@@ -26,4 +29,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Unit test
-        run: pnpm run test
+        run: pnpm run coverage
+
+      - name: Report coverage
+        uses: davelosert/vitest-coverage-report-action@v2

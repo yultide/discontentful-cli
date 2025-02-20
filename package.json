@@ -23,6 +23,7 @@
 		"release": "changeset publish",
 		"lint": "eslint",
 		"test": "vitest",
+		"coverage": "vitest run --coverage",
 		"cli": "tsx src/index.ts"
 	},
 	"lint-staged": {
@@ -55,6 +56,7 @@
 		"@types/node": "^18.11.18",
 		"@typescript-eslint/eslint-plugin": "^5.48.1",
 		"@typescript-eslint/parser": "^5.48.1",
+		"@vitest/coverage-v8": "3.0.6",
 		"eslint": "^8.31.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-prettier": "^5.2.3",
