@@ -26,4 +26,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Unit test
-        run: pnpm run test
+        run: pnpm run coverage
+
+      - name: Report coverage
+        uses: davelosert/vitest-coverage-report-action@v2
