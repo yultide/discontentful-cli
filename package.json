@@ -42,7 +42,7 @@
 		"contentful-management": "^11.47.2",
 		"exceljs": "^4.4.0",
 		"figlet": "^1.5.2",
-		"ora": "^6.1.2"
+		"ora": "^8.2.0"
 	},
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com/"
