@@ -96,9 +96,9 @@ console.log(x);
 
 # task list
 
-- [x] Learn Markdown
-- [ ] Learn Frontend Development
-- [ ] Learn Full Stack Development
+- Learn Markdown
+- Learn Frontend Development
+- Learn Full Stack Development
 
 # horizontal line
 
