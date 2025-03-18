@@ -3,6 +3,7 @@
 	"version": "0.1.1",
 	"license": "MIT",
 	"description": "A collection of contentful tools and utlitiy functions to easily import and export content from an excel spreadsheet.",
+	"homepage": "https://github.com/yultide/discontentful-cli",
 	"repository": {
 		"type": "git",
 		"url": ""
