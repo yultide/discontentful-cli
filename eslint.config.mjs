@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
 	[
 		{
-			ignores: ['dist', '*.cjs', '*.mjs'],
+			ignores: ['dist', '*.cjs', '*.mjs', '*.md'],
 		},
 	],
 	eslint.configs.recommended,
