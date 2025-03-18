@@ -4,7 +4,7 @@ A collection of contentful tools and utlitiy functions to easily import and expo
 
 ## Commands
 
-### `ct init` - initialize contentful credentials
+### `dc init` - initialize contentful credentials
 
 Creates a config file in your home directory called `.dc.config.json`.
 
@@ -19,18 +19,18 @@ Hi John, let's get you setup.
 ✔ Select environment to use master
 ```
 
-### `ct env` - quickly switch environments
+### `dc env` - quickly switch environments
 
 ```
 ct env dev
 ℹ changed environment master ->  dev
 ```
 
-### `ct help` - print help message
+### `dc help` - print help message
 
-Get detailed help messages. Detailed help documentation can be printed with `ct help [command]`
+Get detailed help messages. Detailed help documentation can be printed with `dc help [command]`
 
-### `ct import <file>` - imports xlsx file into contentful
+### `dc import <file>` - imports xlsx file into contentful
 
 Imports the first sheet in excel into contentful. The first sheet must be the active saved sheet.
 
@@ -99,12 +99,12 @@ Support for `.docx` and `.md` requires installation of [pandoc](https://pandoc.o
 | --------------------- | -------- | -------- | -------------------- |
 | 7UyvK6JLO9TgOHAAwTNpX | blogPost | metadata | tags:featured,sticky |
 
-### `ct export <entry-ids> [file]` - exports entries into an xlsx file
+### `dc export <entry-ids> [file]` - exports entries into an xlsx file
 
 Create an xlsx file that contains a comma separated entry list. If you put a `-r, --recursive`, it will recursively find all the entries and include them in the export.
 Adding `-t` will create a template you can use to create a new tree structure using the `new-XXX` prefix.
 
-### `ct diff <lower-env> <higher-env>` - creates a diff report of two contentful environments
+### `dc diff <lower-env> <higher-env>` - creates a diff report of two contentful environments
 
 Creates a diff report between two environments. The command can also generate a migration (`-m, --create-migration`) script using [contentful-migration](https://github.com/contentful/contentful-migration).
 
