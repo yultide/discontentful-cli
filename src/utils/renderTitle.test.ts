@@ -9,12 +9,11 @@ describe('renderTitle', () => {
 	afterAll(restoreConsole);
 
 	test('should render title', () => {
-		renderTitle();
-		expect(console).toHaveLoggedTimes(1);
+		const result = renderTitle();
 
-		const text = figlet.textSync('Contentful Tools', {
+		const text = figlet.textSync('Discontentful CLI', {
 			font: 'Small',
 		});
-		expect(console).toHaveLoggedWith(`\n${text}\n`);
+		expect(result).toEqual(text);
 	});
 });
