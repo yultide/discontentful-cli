@@ -4,5 +4,6 @@ export const renderTitle = () => {
 	const text = figlet.textSync('Contentful Tools', {
 		font: 'Small',
 	});
-	console.log(`\n${text}\n`);
+	// console.log(`\n${text}\n`);
+	return text;
 };

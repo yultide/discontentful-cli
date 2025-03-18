@@ -4,11 +4,11 @@ import { packageJSON } from '@/utils/packageJson';
 import { renderTitle } from '@/utils/renderTitle';
 import { Command } from 'commander';
 
-renderTitle();
+// renderTitle();
 
 const program = new Command();
 
-program.name('ct').description(`Contentful Tools CLI (${packageJSON.version})`).version(packageJSON.version);
+program.name('ct').description(`Contentful Tools CLI (${packageJSON.version})`).version(packageJSON.version).addHelpText('before', renderTitle());
 
 addCommandHandlers(program);
 

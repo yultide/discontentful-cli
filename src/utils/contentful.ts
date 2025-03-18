@@ -171,7 +171,7 @@ export async function promptEnvConfig(spaceId: string, envId: string, cc: Client
 	});
 	const qn = {
 		type: 'list',
-		message: 'Select Environment to use',
+		message: 'Select environment to use',
 		default: '',
 		choices,
 	};

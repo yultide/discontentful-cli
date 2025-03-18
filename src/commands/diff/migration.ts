@@ -6,9 +6,10 @@ import { mkdirp } from 'mkdirp';
 import fs from 'node:fs';
 import os from 'node:os';
 import path, { dirname } from 'node:path';
+import { isDeepStrictEqual } from 'node:util';
 import prettier from 'prettier';
 import { prettyPrint, types } from 'recast';
-import tsParser from 'recast/parsers/typescript';
+import tsParser from 'recast/parsers/typescript.js';
 import toAst from 'to-ast';
 import { fileURLToPath } from 'url';
 import { AddField, ContentfulChange, Field, ModifyDisplayField, ModifyEditorInterface, ModifyField, ModifyFieldOrder, RemoveField } from '.';
@@ -236,7 +237,7 @@ export async function createMigration(c: ContentfulChange): Promise<types.namedT
 			for (const [name, newValue] of Object.entries(data.newField)) {
 				const oldValue = data.oldField[name];
 				// `type` is a required field in the IFieldOptions specification
-				if (name === 'type' || !_.isEqual(oldValue, newValue)) {
+				if (name === 'type' || !isDeepStrictEqual(oldValue, newValue)) {
 					changedFields[name] = newValue;
 				}
 			}

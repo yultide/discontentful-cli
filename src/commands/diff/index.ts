@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { Command } from 'commander';
 import { ContentFields, ContentType, Control, EditorInterface, Environment, KeyValueMap } from 'contentful-management';
 import { diffJson } from 'diff';
-import _ from 'lodash';
+import { isDeepStrictEqual } from 'node:util';
 import { table } from 'table';
 import { saveMigration } from './migration';
 
@@ -119,8 +119,8 @@ export function command(program: Command): Command {
 	program
 		.command('diff')
 		.option('-m, --create-migration', 'create migration')
-		.argument('<lowerEnv>')
-		.argument('<higherEnv>')
+		.argument('<lower-env>')
+		.argument('<higher-env>')
 		.description('Get the diff between two environments')
 		.action(async (lowerEnvName, higherEnvName, options) => {
 			// contentful client setup
@@ -198,7 +198,7 @@ export function diffToRow(item: ContentfulChange) {
 				.map((v) => {
 					const [name, value] = v;
 					const old = data.oldField as unknown as Record<string, object>;
-					if (!_.isEqual(value, old[name])) {
+					if (!isDeepStrictEqual(value, old[name])) {
 						return `${chalk.green(name)}=${diffObject(old[name] as object, value as object)}`;
 					}
 					return undefined;
@@ -355,7 +355,7 @@ export function diffEnvironment(lowerEnv: ContentfulEnvironment, higherEnv: Cont
 						higherEnv: higherEnv.environment,
 					},
 				});
-			} else if (!_.isEqual(newField, oldField)) {
+			} else if (!isDeepStrictEqual(newField, oldField)) {
 				// field modified
 				changes.push({
 					type: 'modifyField',
@@ -439,7 +439,7 @@ export function diffEnvironment(lowerEnv: ContentfulEnvironment, higherEnv: Cont
 		for (const newControl of newEditorInterface.controls || []) {
 			const { fieldId } = newControl;
 			const oldControl = oldControls[fieldId];
-			if (!_.isEqual(oldControl, newControl)) {
+			if (!isDeepStrictEqual(oldControl, newControl)) {
 				changes.push({
 					type: 'modifyEditorInterface',
 					contentType: name,

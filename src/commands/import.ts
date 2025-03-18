@@ -165,7 +165,7 @@ export function command(program: Command): Command {
 		.description(
 			`Create or update fields in an entry.
 
-  Required fields are ${chalk.cyan('Entry ID, Entry Model, Field Name, English')}
+  Required fields are ${chalk.cyan('sysid, model, field, en-US')}
   To create new entries, set the entry id as ${chalk.cyan('new-XXXX')} (e.g. ${chalk.green('new-123,new-foo,new-bar')})
 
   Supported value prefixes:
@@ -180,7 +180,7 @@ export function command(program: Command): Command {
   - ${chalk.cyan('clear:')} - clear the current field
   - ${chalk.cyan('compressasset:')} - compress the specified asset by converting to jpg
   - ${chalk.cyan('image:')} - alias for ${chalk.cyan('assetfile:')} and ${chalk.cyan('asseturl:')}
-  - ${chalk.cyan('tags:')} - metadata tags for the entry (${chalk.cyan('Field Name')} must be ${chalk.green('metadata')})
+  - ${chalk.cyan('tags:')} - metadata tags for the entry (${chalk.cyan('field')} must be ${chalk.green('metadata')})
   - ${chalk.cyan('array:')} - comma separated string (e.g ${chalk.green('array:foo,bar,baz -> ["foo","bar","baz"]')})
   - ${chalk.cyan('bool:')} - coerces value to be a boolean
   - ${chalk.cyan('number:')} - coerces value to be a number (integer or float)
@@ -195,9 +195,9 @@ export function command(program: Command): Command {
   - ${chalk.cyan('html:')} - parses HTML text into Contentful Rich Text
   - ${chalk.cyan('htmlfile:')} - parses HTML file into Contentful Rich Text
   - ${chalk.cyan('date:')} - coerces value to be a date (value must be ISO-8601 format)
-  - ${chalk.cyan('upload:')} - upload an asset to file field (${chalk.cyan('Model Name')} must be ${chalk.green(
+  - ${chalk.cyan('upload:')} - upload an asset to file field (${chalk.cyan('model')} must be ${chalk.green(
 		'asset',
-	)} and ${chalk.cyan('Field Name')} must be ${chalk.green('file')})
+	)} and ${chalk.cyan('field')} must be ${chalk.green('file')})
 `,
 		)
 		.action(async (file, options: Options) => {
