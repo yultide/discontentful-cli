@@ -1,16 +1,16 @@
 {
-	"name": "contentful-tools-cli",
+	"name": "@discontentful/cli",
 	"version": "0.1.0",
-	"private": true,
-	"description": "",
+	"license": "MIT",
+	"description": "A collection of contentful tools and utlitiy functions to easily import and export content from an excel spreadsheet.",
 	"repository": {
 		"type": "git",
 		"url": ""
 	},
 	"type": "module",
 	"bin": {
-		"ct": "./dist/index.js",
-		"contentful-tools-cli": "./dist/index.js"
+		"dc": "dist/index.js",
+		"discontentful": "dist/index.js"
 	},
 	"files": [
 		"dist"
@@ -99,5 +99,10 @@
 		"onlyBuiltDependencies": [
 			"sharp"
 		]
-	}
+	},
+	"main": "index.js",
+	"directories": {
+		"test": "tests"
+	},
+	"author": ""
 }

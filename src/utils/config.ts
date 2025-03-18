@@ -10,7 +10,7 @@ export interface Config {
 	envId: string; // env id
 }
 
-const defaultConfigName = '.ctt.config.json';
+const defaultConfigName = '.dc.config.json';
 
 export function getConfig(configName = defaultConfigName): Config {
 	const configPath = path.join(os.homedir(), configName);

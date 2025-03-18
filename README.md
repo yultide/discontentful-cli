@@ -6,7 +6,7 @@ A collection of contentful tools and utlitiy functions to easily import and expo
 
 ### `ct init` - initialize contentful credentials
 
-Creates a config file in your home directory called `.ctt.config.json`.
+Creates a config file in your home directory called `.dc.config.json`.
 
 Example interaction
 

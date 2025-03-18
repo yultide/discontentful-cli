@@ -71,65 +71,6 @@ export type FallbackResolver = (mdNode: MarkdownNode, appliedMarksTypes: string[
 
 export const assetFileCache: Record<string, string> = {};
 
-// // fake content type for assets
-// const assetContentType: ContentType = {
-// 	sys: {
-// 		id: 'asset',
-// 	},
-// 	fields: [
-// 		{
-// 			type: 'Symbol',
-// 			id: 'title',
-// 			name: 'title',
-// 			required: false,
-// 			localized: false,
-// 		},
-// 		{
-// 			type: 'Text',
-// 			id: 'description',
-// 			name: 'description',
-// 			required: false,
-// 			localized: false,
-// 		},
-// 		{
-// 			type: 'JSON',
-// 			id: 'file',
-// 			name: 'file',
-// 			required: false,
-// 			localized: false,
-// 		},
-// 	],
-// } as ContentType;
-
-// const releaseContentType: ContentType = {
-// 	sys: {
-// 		id: 'release',
-// 	},
-// 	fields: [
-// 		{
-// 			id: 'title',
-// 			type: 'Title',
-// 			name: 'title',
-// 			required: true,
-// 			localized: false,
-// 		},
-// 		{
-// 			id: 'entities',
-// 			name: 'Entities',
-// 			type: 'Array',
-// 			localized: false,
-// 			required: false,
-// 			validations: [],
-// 			disabled: false,
-// 			omitted: false,
-// 			items: {
-// 				type: 'Link',
-// 				linkType: 'Entry',
-// 			},
-// 		},
-// 	],
-// } as ContentType;
-
 export interface ParseValueContext extends Record<string, unknown> {
 	updatedValue?: string;
 	fieldName?: string;
@@ -276,7 +217,7 @@ export async function parseImport(workbook: exceljs.Workbook, sheet: exceljs.Wor
 		const fieldName = getColumnValue(lcRow, 'field');
 
 		// model can be omitted
-		const entryModel = getColumnValue(lcRow, 'model') || currentEntry?.sys.contentType.sys.id || '';
+		const entryModel = getColumnValue(lcRow, 'model') || getEntityModel(currentEntry);
 
 		const model = await getModel(cmClient, entryModel, models);
 
@@ -839,4 +780,14 @@ export function normalizeColumns(rows: Row[], aliases: ColumnNameAlias[]) {
 	}
 
 	return rows;
+}
+
+function getEntityModel(e: Maybe<Entity>) {
+	if (!e) {
+		return '';
+	}
+	if (e.sys.type === 'Asset') {
+		return 'asset';
+	}
+	return e?.sys.contentType?.sys.id || '';
 }
