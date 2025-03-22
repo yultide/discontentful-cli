@@ -1,7 +1,7 @@
 import cp from 'node:child_process';
 import fs from 'node:fs';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { downloadFile, isDateString, notEmpty, openFile, readFile, readJsonFile, sleep, writeFile } from '.';
+import { commandExists, downloadFile, isDateString, notEmpty, openFile, readFile, readJsonFile, sleep, writeFile } from '.';
 
 describe('notEmpty', () => {
 	test('to return false on undefined and null', () => {
@@ -177,5 +177,82 @@ describe('sleep', () => {
 
 		// The promise should resolve
 		await expect(sleepPromise).resolves.toBeUndefined();
+	});
+});
+
+describe('commandExists', () => {
+	const originalPlatform = process.platform;
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+		Object.defineProperty(process, 'platform', {
+			value: originalPlatform,
+			writable: true,
+		});
+	});
+
+	test('should detect command on Unix-like systems', () => {
+		// Mock Unix-like platform
+		Object.defineProperty(process, 'platform', {
+			value: 'darwin',
+			writable: true,
+		});
+
+		// Mock successful command check
+		const execSyncMock = vi.spyOn(cp, 'execSync');
+		execSyncMock.mockReturnValue(Buffer.from('/usr/bin/command'));
+
+		expect(commandExists('git')).toBe(true);
+		expect(execSyncMock).toHaveBeenCalledWith('command -v git');
+	});
+
+	test('should detect command on Windows', () => {
+		// Mock Windows platform
+		Object.defineProperty(process, 'platform', {
+			value: 'win32',
+			writable: true,
+		});
+
+		// Mock successful command check
+		const execSyncMock = vi.spyOn(cp, 'execSync');
+		execSyncMock.mockReturnValue(Buffer.from('C:\\Program Files\\Git\\cmd\\git.exe'));
+
+		expect(commandExists('git')).toBe(true);
+		expect(execSyncMock).toHaveBeenCalledWith('where git', { stdio: [] });
+	});
+
+	test('should handle non-existent commands', () => {
+		// Mock Unix-like platform
+		Object.defineProperty(process, 'platform', {
+			value: 'darwin',
+			writable: true,
+		});
+
+		// Mock command not found
+		const execSyncMock = vi.spyOn(cp, 'execSync');
+		execSyncMock.mockImplementation(() => {
+			throw new Error('Command not found');
+		});
+
+		expect(commandExists('nonexistent-command')).toBe(false);
+	});
+
+	test('should handle special characters in command names', () => {
+		// Mock Unix-like platform
+		Object.defineProperty(process, 'platform', {
+			value: 'darwin',
+			writable: true,
+		});
+
+		// Mock successful command check
+		const execSyncMock = vi.spyOn(cp, 'execSync');
+		execSyncMock.mockReturnValue(Buffer.from('/usr/bin/command'));
+
+		expect(commandExists('command-with-special-chars!@#$')).toBe(true);
+		expect(execSyncMock).toHaveBeenCalledWith("command -v 'command-with-special-chars!@#$'");
+	});
+
+	test('should handle empty command names', () => {
+		expect(commandExists('')).toBe(false);
 	});
 });

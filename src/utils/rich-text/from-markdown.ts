@@ -439,8 +439,8 @@ export function prepareMdAST(ast: MarkdownTree): MarkdownNode {
 	});
 }
 
+const processor = unified().use(markdown).use(gfm);
 export function markdownAst(md: string) {
-	const processor = unified().use(markdown).use(gfm);
 	const tree = processor.parse(md) as unknown as MarkdownTree;
 	const ast = prepareMdAST(tree);
 	return ast;

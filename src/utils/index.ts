@@ -128,6 +128,7 @@ export function sleep(ms: number) {
  * @returns
  */
 export function commandExists(cmd: string) {
+	if (!cmd) return false;
 	const cleanInput = (input: string) => {
 		let s = input;
 		if (/[^A-Za-z0-9_/:=-]/.test(s)) {
