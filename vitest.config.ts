@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -7,6 +8,8 @@ export default defineConfig({
 				inline: ['vitest-console'],
 			},
 		},
+		include: ['src/**/*.test.ts', 'tests/**/*.test.ts'],
+		exclude: ['**/*.cjs', '**/*.mjs'],
 		setupFiles: ['vitest.setup.ts'],
 		coverage: {
 			exclude: [...(configDefaults.coverage.exclude || []), 'src/types'],
@@ -14,6 +17,11 @@ export default defineConfig({
 			reporter: ['text', 'json-summary', 'json'],
 			// If you want a coverage reports even if your tests are failing, include the reportOnFailure option
 			reportOnFailure: true,
+		},
+	},
+	resolve: {
+		alias: {
+			'@': path.resolve(__dirname, 'src'),
 		},
 	},
 });
