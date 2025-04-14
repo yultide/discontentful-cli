@@ -7,10 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const packageJSON = {
 	getContent() {
-		let packageJsonPath = path.resolve(__dirname, '../', 'package.json');
-		if (!fs.existsSync(packageJsonPath)) {
-			packageJsonPath = path.resolve(__dirname, '../..', 'package.json');
-		}
+		const packageJsonPath = path.resolve(__dirname, '../../', 'package.json');
 		const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8')) as PackageJson;
 		return packageJsonContent;
 	},

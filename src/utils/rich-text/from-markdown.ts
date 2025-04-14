@@ -6,12 +6,25 @@ import markdown from 'remark-parse';
 import { unified } from 'unified';
 import { createLink } from '../contentful';
 
+export interface Position {
+	end: {
+		column: number;
+		line: number;
+		offset: number;
+	};
+	start: {
+		column: number;
+		line: number;
+		offset: number;
+	};
+}
 export interface MarkdownNode extends MarkdownTree {
 	depth: string;
 	type: string;
 	ordered: boolean;
 	value: string;
 	start?: number;
+	position?: Position;
 }
 
 export interface MarkdownTree {
@@ -426,8 +439,8 @@ export function prepareMdAST(ast: MarkdownTree): MarkdownNode {
 	});
 }
 
+const processor = unified().use(markdown).use(gfm);
 export function markdownAst(md: string) {
-	const processor = unified().use(markdown).use(gfm);
 	const tree = processor.parse(md) as unknown as MarkdownTree;
 	const ast = prepareMdAST(tree);
 	return ast;

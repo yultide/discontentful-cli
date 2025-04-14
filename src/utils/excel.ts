@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import exceljs from 'exceljs';
 import fs from 'node:fs';
 import util from 'node:util';
-import { Maybe } from '.';
+import { Maybe, sleep } from '.';
 import { logger } from './logger';
 
 export interface Row {
@@ -24,16 +24,6 @@ export function adjustColumnWidth(worksheet: exceljs.Worksheet, maxColumnWidth =
 		widths.push((column.header?.length || 0) + 6);
 		const maxLength = Math.max(...widths);
 		column.width = Math.min(maxColumnWidth, maxLength);
-	});
-}
-
-/**
- * sleep using async/await
- * @param {number} ms - number of milliseconds to sleep
- */
-export function sleep(ms: number) {
-	return new Promise((resolve) => {
-		setTimeout(resolve, ms);
 	});
 }
 

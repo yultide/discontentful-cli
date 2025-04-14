@@ -69,12 +69,13 @@ export interface MarkdownTree {
 // COMPAT: can resolve with either Node or an array of Nodes for back compatibility.
 export type FallbackResolver = (mdNode: MarkdownNode, appliedMarksTypes: string[]) => Promise<Node | Node[] | null>;
 
-export const assetFileCache: Record<string, string> = {};
+export const assetFileCacheDefault: Record<string, string> = {};
 
 export interface ParseValueContext extends Record<string, unknown> {
 	updatedValue?: string;
 	fieldName?: string;
 	contentType?: ContentType;
+	assetFileCache?: Record<string, string>;
 }
 
 export interface ParseValueOptions {
@@ -415,6 +416,8 @@ export async function parseValue(inValue: Maybe<string | Date>, opt: ParseValueO
 		return (inValue as Date).toISOString();
 	}
 
+	const assetFileCache = context.assetFileCache || assetFileCacheDefault;
+
 	const colonIndex = inValue.indexOf(':');
 	let prefix = colonIndex > 0 ? inValue.slice(0, colonIndex) : '';
 	const value = inValue.slice(colonIndex + 1);
@@ -483,44 +486,13 @@ export async function parseValue(inValue: Maybe<string | Date>, opt: ParseValueO
 				return createLink(assetId, 'Asset');
 			}
 
-			const assetPath = value;
-			const isUrl = assetPath.startsWith('http');
-			let title = path.basename(assetPath);
-			let type = mime.lookup(path.extname(assetPath)) || 'application/octet-stream';
-			const description = title;
-			let fullpath = isUrl ? `${os.tmpdir()}/asset-${nanoid(8)}` : assetPath;
-
-			if (isUrl) {
-				type = await downloadFile(assetPath, fullpath);
+			const compress = prefix === 'compressasset';
+			const asset = await createAssetLinkFromFile(value, cmClient, compress);
+			if (asset) {
+				newValueHandler?.('asset', asset.sys.id);
+				assetFileCache[value] = asset.sys.id;
 			}
-
-			if (!fs.existsSync(fullpath)) {
-				throw new Error(`asset file ${fullpath} does not exist`);
-			}
-
-			if (prefix === 'compressasset') {
-				const [compressedPath] = await compressImage([fullpath]);
-				const ext = path.extname(title);
-				fullpath = compressedPath;
-				title = title.replace(ext, '.jpg');
-			}
-
-			const file: File = {
-				title,
-				type,
-				fullpath,
-				description,
-			};
-			const asset = await createAsset(cmClient, file);
-			if (isUrl) {
-				fs.unlinkSync(fullpath);
-			}
-
-			// patch asset
-			newValueHandler?.('asset', asset.sys.id);
-
-			assetFileCache[value] = asset.sys.id;
-			return createLink(asset.sys.id, 'Asset');
+			return asset;
 		}
 		case 'tags': {
 			const values = value.split(',');
@@ -745,13 +717,12 @@ function getColumnValue(row: Row, columnName: string): string {
 export async function patchAssetfilesInMarkdown(value: string, cmClient?: Environment) {
 	const matches = value.match(/!\[embedded-asset-block\]\(assetfile:([^)]+)/g);
 	let md = value;
-	if (matches) {
+	if (matches && cmClient) {
 		for (const filepath of matches.map((m) => m.split('assetfile:')[1])) {
-			const assetLink = (await parseValue(`assetfile:${filepath}`, {
-				context: {},
-				cmClient,
-			})) as Link<'Asset'>;
-			md = md.replace(`assetfile:${filepath}`, assetLink.sys.id);
+			const assetLink = await createAssetLinkFromFile(filepath, cmClient, false);
+			if (assetLink) {
+				md = md.replace(`assetfile:${filepath}`, assetLink.sys.id);
+			}
 		}
 	}
 	return md;
@@ -790,4 +761,45 @@ function getEntityModel(e: Maybe<Entity>) {
 		return 'asset';
 	}
 	return e?.sys.contentType?.sys.id || '';
+}
+
+export async function createAssetLinkFromFile(filepath: string, cmClient: Environment, compress: boolean) {
+	if (!cmClient) {
+		throw new Error('upload: not supported w/o cmClient');
+	}
+
+	const assetPath = filepath;
+	const isUrl = assetPath.startsWith('http');
+	let title = path.basename(assetPath);
+	let type = mime.lookup(path.extname(assetPath)) || 'application/octet-stream';
+	const description = title;
+	let fullpath = isUrl ? `${os.tmpdir()}/asset-${nanoid(8)}` : assetPath;
+
+	if (isUrl) {
+		type = await downloadFile(assetPath, fullpath);
+	}
+
+	if (!fs.existsSync(fullpath)) {
+		throw new Error(`asset file ${fullpath} does not exist`);
+	}
+
+	if (compress) {
+		const [compressedPath] = await compressImage([fullpath]);
+		const ext = path.extname(title);
+		fullpath = compressedPath;
+		title = title.replace(ext, '.jpg');
+	}
+
+	const file: File = {
+		title,
+		type,
+		fullpath,
+		description,
+	};
+	const asset = await createAsset(cmClient, file);
+	if (isUrl) {
+		fs.unlinkSync(fullpath);
+	}
+
+	return createLink(asset.sys.id, 'Asset');
 }
