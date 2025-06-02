@@ -34,14 +34,6 @@ jobs:
       - name: Unit test
         run: pnpm run coverage
 
-      - name: Creating .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //npm.pkg.github.com/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
@@ -50,4 +42,4 @@ jobs:
           title: 'ci: release packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
