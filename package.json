@@ -61,9 +61,6 @@
 		"to-ast": "^1.0.0",
 		"unified": "^11.0.5"
 	},
-	"publishConfig": {
-		"registry": "https://npm.pkg.github.com/"
-	},
 	"devDependencies": {
 		"@changesets/cli": "^2.28.1",
 		"@commitlint/cli": "^19.8.0",
